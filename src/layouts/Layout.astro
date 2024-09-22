@@ -1,4 +1,8 @@
 ---
+// Supports weights 100-900
+import Noise from '@/components/Noise.astro';
+import '@fontsource-variable/jost';
+
 interface Props {
 	title: string;
 }
@@ -7,17 +11,19 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content="Pre-Landing de la Velada IV - Basado en Midudev" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<Noise />
+		<div class="max-w-6xl px-10 pt-40 mx-auto"> <!-- 1152 - 40*2 ~ 1072px (imagen Figma oficial) -->
+			<slot />
+		</div>
 	</body>
 </html>
 <style is:global>
@@ -33,18 +39,7 @@ const { title } = Astro.props;
 		);
 	}
 	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
+		font-family: "Jost Variable" ,system-ui, sans-serif;
+		background: #ddd;
 	}
 </style>

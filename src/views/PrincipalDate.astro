@@ -1,0 +1,112 @@
+---
+const fecha = new Date("2024-03");
+// navigator.geolocation.getCurrentPosition()
+---
+
+<section class="animate-blurred-fade-in animate-delay-400 flex flex-col justify-center items-center text-center text-primary mt-20">
+    
+    <h2 class="uppercase text-5xl font-semibold">25 de marzo de 2025
+        <span aria-hidden class="hidden md:inline">•</span>
+        <br aria-hidden class="md:hidden">
+        <!-- <span>19:00 H CET</span> -->
+        <span>
+            <!-- https://epochconverter.com
+                 Yr	  Mon  Day Hr  Min  Sec
+                2025 - 3 - 25  19 : 00 : 00         Local time  Human date to Timestamp
+                
+                Epoch timestamp: 1742929200
+                Timestamp in milliseconds: 1742929200000 <- ¡QUEREMOS ESTA INFO EN MILISEGUNDOS!
+                Date and time (GMT): Tuesday, 25 March 2025 19:00:00
+                Date and time (your time zone): martes, 25 de marzo de 2025 19:00:00 GMT+00:00 
+            -->
+            <script is:inline>
+                const END_DATE = 1742929200000;
+                const d = new Date(END_DATE);
+                /**
+                 * En la consola podemos hacer:
+                 * new Date(Date.now()).getTimezoneOffset()
+                 * >>> -60
+                 * 
+                 * new Date(Date.now()).toLocaleTimeString("en-ES", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                    })
+                    >>> '03:30 PM'
+                 */
+                // const date = d.toLocaleDateString("es-ES", {
+                const date = d.toLocaleTimeString("es-ES", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                })
+                // console.log(date);
+
+                // Get current timezone (UTC)
+                let tzOffset = -d.getTimezoneOffset(); // -60 (minutos) console.log(tzOffset);
+                const diff = tzOffset / 60 // +1 hora console.log(diff);
+                const utc = diff >= 0 ? `UTC+${diff}` : `UTC-${Math.abs(diff)}`
+                // realmente está bien que sea '-60' de primeras...pero así también se entiende.
+
+                // GMT+1 === CET
+                const TZ_DICCIONARY = { 'UTC+1': 'CET', }
+                const tz = TZ_DICCIONARY[utc] ?? utc
+
+                const selfScript = document.currentScript;
+                selfScript.parentNode.innerHTML = `${date} ${tz}`;
+            </script>
+        </span>
+    </h2>
+
+    <h3 class="uppercase text-2xl font-medium flex flex-col justify-centre items-center mt-6">
+        <span>Evento de Presentación</span>
+        <span class="uppercase">
+            <a href="https://es.wikipedia.org/wiki/Estadio_Heliodoro_Rodr%C3%ADguez_L%C3%B3pez" class="hover:underline decoration-purple-500 no-underline decoration-wavy inline-block transition duration-300">
+                Heliodoro Rodríguez López (Tenerife)
+            </a>
+        </span>
+    </h3>
+
+    <a
+        href="#"
+        rel="noopener noreferrer"
+        target="_blank"
+        class={`
+        uppercase px-6 py-2 mt-8 rounded-sm shadow-sm hover:shadow-lg shadow-purple-500 border-4 border-primary font-medium hover:bg-slate-300 hover:scale-110 text-lg inline-block transition`}
+    >
+        Entradas Agotadas
+    </a>
+
+</section>
+
+<!-- 
+The code you provided uses the Intl.DateTimeFormat API to format a date according to the user's locale settings (determined by navigator.language).
+
+javascript
+const date = new Date("2012-05-24");
+const formattedDate = new Intl.DateTimeFormat(navigator.language).format(date);
+
+console.log(formattedDate);
+// Output will depend on user's locale, e.g., "24/05/2012" in "en-GB" or "5/24/2012" in "en-US".
+
+    · Intl.DateTimeFormat: It is part of the Intl object and is used for date and time formatting based on the locale.
+    · navigator.language: Retrieves the user's preferred language (like "en-US", "fr-FR", etc.).
+.format(): Formats the Date object into a human-readable string, following the user's locale format.
+
+
+<script>
+    function updateLocalTime() {
+        const now = new Date();
+        const localTimeString = now.toLocaleTimeString(navigator.language, {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        document.getElementById('local-time').textContent = `Your local time is: ${localTimeString}`;
+    }
+
+    // Update the local time every second
+    setInterval(updateLocalTime, 1000);
+
+    // Initially set the local time
+    updateLocalTime();
+</script>
+-->

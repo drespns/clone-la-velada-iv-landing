@@ -1,0 +1,30 @@
+---
+import Google from "@/components/Google.astro";
+
+---
+
+<section class="mt-20 flex flex-col justify-center items-center gap-6 text-center uppercase font-medium">
+    
+    <div class="flex justify-center items-center">
+        <a href="#" class="hover:text-purple-500 transition hover:scale-105">
+            <Google class="text-primary size-8" />
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center justify-center [&>article]:max-h-[150px]">
+        <article class="flex order-2 md:order-none justify-center items-center text-xl py-10 md:py-20 px-10 md:border-y-2 border-y-primary">
+            <h5 class="w-56">Presentación, pesaje, entrevista y cara a cara</h5>
+        </article>
+        <article class="col-span-1 order-1 md:order-none md:col-span-2 flex justify-center items-center text-4xl py-10 md:py-20 px-10 border-y-2 md:border-y-2 border-y-primary">
+            <h4>
+                <a href="#" class="hover:text-purple-500 transition inline-block hover:scale-105">
+                    Síguelo en directo twitch.tv/ibai
+                </a>
+            </h4>
+        </article>
+        <article class="flex order-3 justify-center items-center text-xl py-10 md:py-20 px-10 border-y-2 border-y-primary">
+            <h5>Con la presencia de los boxeadores y boxeadoras</h5>
+        </article>
+    </div>
+
+</section>

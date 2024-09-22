@@ -1,0 +1,29 @@
+---
+
+---
+
+<div
+    class={`fixed w-[200%] h-[200vh] inset-0 z-[9999] pointer-events-none contrast-[4] brightness-[4]`}
+>
+</div>
+
+<style>
+
+    div {
+        background-image: url('./noisy-background.jpg');
+        mix-blend-mode: multiply;
+
+        /* animation: noise .2 infinite; */
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        div {
+            animation: none;
+        }
+    }
+
+    @keyframes noise {
+        to { transform: rotate(); }
+        /* TODO */
+    }
+</style>

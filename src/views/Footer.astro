@@ -1,0 +1,25 @@
+---
+import Instagram from '@/components/Instagram.astro';
+import Github from '@/components/GitHub.astro';
+
+const actualYear = new Date().getFullYear();
+---
+
+<footer class="flex flex-col justify-center sm:flex-row sm:justify-between items-center border-t-2 border-primary w-full pt-9 mb-9 mt-16">
+    <span class="sm:py-4 text-center border-b-2 border-primary sm:border-none">©️{actualYear} La Velada del Año
+        <span aria-hidden class="hidden sm:inline-flex">|</span>
+        <br aria-hidden class="sm:hidden">Todos los izquierdos reservados
+    </span>
+    <ul class="flex flex-row justify-center items-center gap-4 py-4 [&>li>a]:inline-flex [&>li>a]:transition-transform [&>li>a]:duration-300 [&>li>a]:ease-in-out [&>li]:inline-flex [&>li]:items-center">
+        <li>
+            <a href="#" rel="noopener" target="_blank" class="hover:scale-125">
+                <Instagram class="text-primary" width="32px" />
+            </a>
+        </li>
+        <li>
+            <a href="#" rel="noopener" target="_blank" class="hover:scale-125">
+                <Github class="text-primary" width="32px" />
+            </a>
+        </li>
+    </ul>
+</footer>

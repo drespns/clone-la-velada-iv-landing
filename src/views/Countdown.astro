@@ -1,0 +1,95 @@
+---
+import LogoVelada from "@/components/LogoVelada.astro";
+
+
+---
+
+<section class="flex flex-col justify-center items-center gap-8 mt-32">
+    <LogoVelada class="text-primary size-32" />
+
+    <div class="flex flex-row gap-x-4 mt-12 text-xl">
+        
+        <div class="flex flex-col gap-4 items-center justify-center w-24">
+            <span class="font-semibold text-3xl tabular-nums lining-nums">00</span>
+            <span>Días</span>
+        </div>
+        <span aria-hidden class="text-xl">:</span>
+        <div class="flex flex-col gap-4 items-center justify-center w-24">
+            <span class="font-semibold text-3xl tabular-nums lining-nums">00</span>
+            <span>Horas</span>
+        </div>
+        <span aria-hidden class="text-xl">:</span>
+        <div class="flex flex-col gap-4 items-center justify-center w-24">
+            <span class="font-semibold text-3xl tabular-nums lining-nums">00</span>
+            <span>Minutos</span>
+        </div>
+        <span aria-hidden class="text-xl">:</span>
+        <div class="flex flex-col gap-4 items-center justify-center w-24">
+            <span class="font-semibold text-3xl tabular-nums lining-nums">00</span>
+            <span>Segundos</span>
+        </div>
+    </div>
+</section>
+
+<script>
+    /**
+     * const END_DATE = 1742929200000;
+     * const d = new Date(END_DATE);
+     */
+    const daysElement = document.querySelector('section > div > div:first-of-type > span') as HTMLSpanElement;
+    // console.log(daysElement);
+    const hoursElement = document.querySelector('section > div > div:nth-of-type(2) > span') as HTMLSpanElement;
+    const minutesElement = document.querySelector('section > div > div:nth-of-type(3) > span') as HTMLSpanElement;
+    const secondsElement = document.querySelector('section > div > div:nth-of-type(4) > span') as HTMLSpanElement;
+
+    // ------
+    const now = Date.now();
+    const END_DATE = 1742929200000;
+    const timePending = END_DATE - now;
+    
+    // const SECONDS = 1000;
+    // const MINUTES = 60 * 1000;
+    // const HOURS = 60 * 60 * 1000;
+    // const DAYS = 24 * 60 * 60 * 1000;
+
+    // const SECONDS = 1000;
+    // const MINUTES = 60 * 1000;
+    // const HOURS = 24;
+    const DAYS = 24 * 60 * 60 * 1000;
+
+    let [days, hours, minutes, seconds] = [0, 0, 0, 0]
+
+    // const formatTime = (time: number) => Math.floor(time).toString().padStart(2, "0");
+
+    function updateTime () {
+        const now = Date.now();
+        const timePending = END_DATE - now;
+
+        // days = Math.floor(timePending / now);
+        const days_RAW = timePending / DAYS;
+        days = Math.floor(days_RAW);
+
+        const hours_RAW = (days_RAW - days) * 24;
+        hours = Math.floor(hours_RAW);
+
+        const minutes_RAW = (hours_RAW - hours) * 60
+        minutes = Math.floor(minutes_RAW);
+
+        const seconds_RAW = (minutes_RAW - minutes) * 60
+        seconds = Math.floor(seconds_RAW);
+        
+        daysElement.innerHTML = days.toLocaleString().padStart(2, "0");
+        hoursElement.innerHTML = hours.toLocaleString().padStart(2, "0");
+        minutesElement.innerHTML = minutes.toLocaleString().padStart(2, "0");
+        secondsElement.innerHTML = seconds.toLocaleString().padStart(2, "0");
+        console.log(days); console.log(hours); console.log(minutes); console.log(seconds);
+    }
+
+    setInterval(updateTime, 1000); // cada 1sec.
+    updateTime(); // si no colocamos esto, aparecerá un cero en cada posición durante un segundo...
+</script>
+
+
+<style>
+    /*  */
+</style>
