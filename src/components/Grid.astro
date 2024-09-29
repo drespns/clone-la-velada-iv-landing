@@ -1,0 +1,39 @@
+---
+const { theme } = Astro.props
+---
+
+<div class="absolute bg-grid-light dark:bg-grid-dark w-full"></div>
+
+<style>
+    .bg-grid-light {
+		--grid-color: rgba(0, 0, 0, 0.062);
+
+		background-image:
+			linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px),
+			linear-gradient(to right, var(--grid-color) 1px, transparent 1px);
+		background-size: 16px 16px;
+
+		-webkit-mask-image: linear-gradient(black 90%, transparent);
+		mask-image: linear-gradient(black 90%, transparent);
+
+		width: 100%;
+		height: 100%;
+		border-top: none;
+	}
+
+    .bg-grid-dark {
+		--grid-color: rgba(255, 255, 255, 0.057);
+
+		background-image:
+			linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px),
+			linear-gradient(to right, var(--grid-color) 1px, transparent 1px);
+		background-size: 16px 16px;
+
+		-webkit-mask-image: linear-gradient(black 90%, transparent);
+		mask-image: linear-gradient(black 90%, transparent);
+
+		width: 100%;
+		height: 100%;
+		border-top: none;
+	}
+</style>
