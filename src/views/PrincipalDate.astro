@@ -3,7 +3,7 @@ const fecha = new Date("2024-03");
 // navigator.geolocation.getCurrentPosition()
 ---
 
-<section class="animate-blurred-fade-in animate-delay-400 flex flex-col justify-center items-center text-center text-primary mt-20">
+<section class="animate-blurred-fade-in animate-delay-400 flex flex-col justify-center items-center text-center mt-20">
     
     <h2 class="uppercase text-5xl font-semibold">25 de marzo de 2025
         <span aria-hidden class="hidden md:inline">•</span>
@@ -47,7 +47,7 @@ const fecha = new Date("2024-03");
                 // realmente está bien que sea '-60' de primeras...pero así también se entiende.
 
                 // GMT+1 === CET
-                const TZ_DICCIONARY = { 'UTC+1': 'CET', }
+                const TZ_DICCIONARY = { 'UTC+1': 'CET' }
                 const tz = TZ_DICCIONARY[utc] ?? utc
 
                 const selfScript = document.currentScript;
@@ -70,7 +70,7 @@ const fecha = new Date("2024-03");
         rel="noopener noreferrer"
         target="_blank"
         class={`
-        uppercase px-6 py-2 mt-8 rounded-sm shadow-sm hover:shadow-lg shadow-purple-500 border-4 border-primary font-medium hover:bg-slate-300 hover:scale-110 text-lg inline-block transition`}
+        uppercase px-6 py-2 mt-8 rounded-sm shadow-sm hover:shadow-lg shadow-purple-500 border-4 border-primary dark:border-secondary font-medium hover:bg-slate-300 hover:scale-110 text-lg inline-block transition`}
     >
         Entradas Agotadas
     </a>
