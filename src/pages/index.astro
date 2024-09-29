@@ -1,5 +1,6 @@
 ---
 // Layouts
+import Theme from '@/components/Theme.astro';
 import Layout from '@/layouts/Layout.astro';
 
 // Views
@@ -11,13 +12,17 @@ import PrincipalDate from '@/views/PrincipalDate.astro';
 ---
 
 <Layout title="La Velada V - Evento de boxeo de Ibai Llanos">
+	<!-- <Theme /> -->
+
 	<Hero />
+
 	<main>
 		<!-- <h1 class="text-white animate-blurred-fade-in">Velada IV</h1> -->
 		<PrincipalDate />
 		<Info />
 		<Countdown />
 	</main>
+
 	<Footer />
 </Layout>
 

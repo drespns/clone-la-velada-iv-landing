@@ -1,0 +1,98 @@
+---
+// import GitHub from "../assets/svg/media/GitHub.astro";
+
+import Moon from "@/components/icons/Moon.astro";
+import Sun from "@/components/icons/Sun.astro";
+
+
+---
+
+<div
+  class="fixed top-4 right-4 flex flex-row items-center border-2 bg-slate-600 dark:bg-slate-200 rounded-md border-primary px-6 py-2 dark:border-secondary z-[100]"
+>
+    <button class="min-h-10 flex justify-center items-center" id="theme-button">
+        <span class="hidden dark:inline-block"><Moon /></span>
+        <span class="dark:hidden"><Sun /></span>
+    </button>
+</div>
+
+<script>
+
+    // document.addEventListener('DOMContentLoaded', () => {
+    const themeButton = document.getElementById("theme-button") as HTMLButtonElement;
+    const spanSVGDark = themeButton.querySelector("span.hidden") as HTMLSpanElement;
+    const spanSVGLight = themeButton.querySelector("span:not(.hidden)") as HTMLSpanElement;
+
+    function setTheme(theme: "dark" | "light") {
+        if (theme === "dark") {
+            spanSVGDark.classList.remove("hidden");
+            spanSVGLight.classList.add("hidden");
+        } else {
+            spanSVGDark.classList.add("hidden");
+            spanSVGLight.classList.remove("hidden");
+        }
+    }
+
+    // Aplicar el tema al cargar la página
+    const theme = window.getThemePreference();
+    document.documentElement.classList.toggle("dark", theme === "dark");
+
+    // Mostrar el ícono correcto
+    setTheme(theme);
+
+    // Manejar el clic para cambiar el tema
+    themeButton.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        const isDark = document.documentElement.classList.contains("dark");
+        const currentTheme = isDark ? "dark" : "light";
+        window.dispatchEvent(new CustomEvent('theme-changed', { detail: currentTheme }));
+        // window.dispatchEvent(new CustomEvent('themeChange', { detail: currentTheme }));
+        
+        localStorage.setItem("theme", theme);
+
+        setTheme(theme);
+    });
+    // });
+
+</script>
+
+<!-- <script>
+    
+    function handleToggleClick() {
+        document.documentElement.classList.toggle("dark");
+        const isDark = document.documentElement.classList.contains("dark");
+
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+        console.log(localStorage);
+
+        if (isDark) {
+            localStorage.setItem('theme', 'light');
+
+            spanSVGDark.classList.add("hidden");
+            spanSVGLight.classList.remove("hidden");
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            
+            spanSVGDark.classList.remove("hidden");
+            spanSVGLight.classList.add("hidden");
+        }
+    }
+
+    // function updateThemeMessage(theme) {
+    //     const translationTheme = theme === "dark" ? "oscuro" : "claro";
+    //     const actualThemeMessage = `Alternar tema, el tema actual es ${translationTheme}`;
+    //     const spanSROnly = document.querySelector("span.sr-only");
+
+    //     spanSROnly.innerHTML = actualThemeMessage;
+    //     // if (spanSROnly) spanSROnly.innerHTML = actualThemeMessage;
+    // }
+
+    const themeButton = document.getElementById("theme-button");
+    const spanSVGDark = themeButton.querySelector("span.hidden");
+    const spanSVGLight = themeButton.querySelector("span:not(.hidden)");
+    // console.log(themeButton);
+    
+    themeButton.addEventListener("click", handleToggleClick);
+    updateThemeMessage(window.getThemePreference());
+</script> -->
