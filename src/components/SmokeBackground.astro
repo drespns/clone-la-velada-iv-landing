@@ -1,0 +1,267 @@
+<div id="smoke-background" class="fixed top-0 h-full w-full -z-10"></div>
+
+<script>
+    import * as THREE from 'three';
+
+    const $background = document.querySelector('#smoke-background') as HTMLDivElement;
+
+    let width = window.innerWidth,
+        height = window.innerHeight;
+
+    const THEME = {
+        dark: {
+            background: 0x555555,
+            light: 0x000000,
+            opacity: .15,
+        },
+        light: {
+            background: 0x000000,
+            light: 0xffffff,
+            opacity: .15,
+        },
+    };
+    let currentTheme = THEME[window.getThemePreference()];
+
+    // Scene:
+    const scene = new THREE.Scene();
+
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, width / height);
+    camera.position.z = 15;
+    scene.add(camera);
+
+    // Light:
+    let light = new THREE.DirectionalLight(currentTheme.light, 1);
+    light.position.set(-1, -2, 5);
+    light.lookAt(new THREE.Vector3(0, 0, 0))
+    // light.position.set(-1, -2, 2);
+    scene.add(light);
+
+    // Background SMOKE:
+    const smokeParticles: THREE.Mesh[] = [];
+    const textureLoader = new THREE.TextureLoader();
+    
+    const smokeGeometry = new THREE.PlaneGeometry(150, 150);
+    let smokeMaterial: THREE.MeshLambertMaterial;
+    
+    textureLoader.load("/smoke.png", (texture) => {
+
+        // Set up texture wrapping and filtering to avoid hard edges
+        texture.wrapS = THREE.RepeatWrapping; // Repeat the texture on the S (horizontal) axis
+        texture.wrapT = THREE.RepeatWrapping; // Repeat the texture on the T (vertical) axis
+        texture.minFilter = THREE.LinearFilter; // Smoother minification
+        texture.magFilter = THREE.LinearFilter; // Smoother magnification
+
+        smokeMaterial = new THREE.MeshLambertMaterial({
+            map: texture,
+            transparent: true,
+            depthTest: true, // Asegúrate de que el orden de renderizado sea correcto
+            blending: THREE.AdditiveBlending, // Para crear un efecto de humo más etéreo
+            opacity: currentTheme.opacity,
+        });
+
+        const NUM_OF_PARTICLES = 350;
+        for (let p = 0; p < NUM_OF_PARTICLES; p++) {
+            const particle = new THREE.Mesh(smokeGeometry, smokeMaterial);
+            // particle.position.set(
+            //     0,
+            //     0,
+            //     0
+            // );
+            particle.position.set(
+                Math.random() * 500 - 250,
+                Math.random() * 500 - 250,
+                Math.random() * 1000 - 100
+            );
+            particle.rotation.z = 2;
+            smokeParticles.push(particle);
+            scene.add(particle);
+        }
+    });
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    renderer.setClearColor(currentTheme.background, 0.25);
+    $background.append(renderer.domElement);
+
+    // Function to update the theme dynamically
+    function updateTheme(theme: "dark" | "light") {
+        currentTheme = THEME[theme];
+
+        // Update the background color
+        renderer.setClearColor(currentTheme.background, 0.25);
+
+        // Update the smoke opacity and light color
+        if (smokeMaterial) smokeMaterial.opacity = currentTheme.opacity;
+
+        light.color.setHex(currentTheme.light);
+    }
+
+    // Window resize handling
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    }
+    
+    // Animation loop
+    const clock = new THREE.Clock(true);
+    function animate() {
+        const elapsedTime = clock.getElapsedTime();
+        requestAnimationFrame(animate);
+        
+        smokeParticles.forEach((particle) => {
+            particle.rotation.z += 0.001;
+            // particle.rotation.z = elapsedTime * 0.05;
+        });
+        renderer.render(scene, camera);
+    }
+    animate();
+    
+    window.addEventListener("resize", resize);
+    // Listen to theme change events
+    window.addEventListener("theme-changed", ({ detail }) => {
+        const newTheme: "dark" | "light" = detail as "dark" | "light"; // Expected 'dark' or 'light'
+        // const newTheme = window.getThemePreference(); // Expected 'dark' or 'light'
+        // const newTheme: "dark" | "light" = localStorage.getItem("theme") as "dark" | "light"; // Expected 'dark' or 'light'
+        updateTheme(newTheme);
+    });
+
+</script>
+
+<!-- <script>
+
+    // import type { Code } from 'astro:components';
+    import * as THREE from 'three'
+
+    const $background = document.querySelector('#smoke-background') as HTMLDivElement;
+
+    let width = window.innerWidth, height = window.innerHeight;
+
+    const THEME = {
+        dark: {
+            background: 0x555555,
+            light: 0xffffff,
+            opacity: 1,
+        },
+        light: {
+            background: 0xdddddd,
+            light: 0xffffff,
+            opacity: .5,
+        },
+    } as const
+    const themePreference = window.getThemePreference();
+    console.log(themePreference);
+    const currentTheme = THEME[themePreference];
+
+    // Scene:
+    const scene = new THREE.Scene()
+
+    // Object
+    // const geometry = new THREE.BoxGeometry(1, 1, 1)
+    // const material = new THREE.MeshBasicMaterial({ color: 'indigo', wireframe: true })
+    // const mesh = new THREE.Mesh(geometry, material)
+    // scene.add(mesh)
+
+
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, width / height)
+    camera.position.z = 10
+    scene.add(camera)
+
+    // Light:
+    const light = new THREE.DirectionalLight(
+        currentTheme.light,
+        1
+    )
+    light.position.set(-1, -2, 2);
+    // light.lookAt(new THREE.Vector3(0, 0, 0));
+    scene.add(light);
+
+    // const lightHelper = new THREE.DirectionalLightHelper(light, 5, "black")
+    // scene.add(lightHelper);
+
+
+
+    // Background SMOKE:
+    const smokeParticles: THREE.Mesh[] = []
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.crossOrigin = "" // necesario para no tener problemas de CORS, en caso de cargar texturas externas a nuestro
+    // proyecto.
+
+    textureLoader.load("/smoke.webp", (texture) =>  {
+        // const smokeGeometry = new THREE.PlaneGeometry();
+        const smokeGeometry = new THREE.PlaneGeometry(230, 200);
+        const smokeMaterial = new THREE.MeshLambertMaterial(
+            {
+                // aoMap: texture,
+                // displacementMap: texture,
+                map: texture,
+                transparent: true,
+                opacity: currentTheme.opacity,
+            }
+        )
+
+        const NUM_OF_PARTICLES = 250;
+        for (let p = 0; p < NUM_OF_PARTICLES; p++) {
+
+            const particle = new THREE.Mesh(smokeGeometry, smokeMaterial);
+            particle.position.set(
+                Math.random() * 500 - 250,
+                Math.random() * 500 - 250,
+                Math.random() * 1000 - 100
+            )
+            particle.rotation.z = ((Math.random() - 0.5) * 360);
+            // particle.rotation.z = ((Math.random() - 0.5) * 360);
+            // particle.rotation.z = ((Math.random() - 0.5) * 2*360);
+            
+            smokeParticles.push(particle);
+            scene.add(particle);
+        }
+    })
+
+
+    // ------------------------------------------------------------------
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer()
+    // const renderer = new THREE.WebGLRenderer({
+    //     canvas: $background,
+    // })
+    renderer.setSize(width, height);
+    renderer.setClearColor(currentTheme.background, .75) // color, alpha
+    $background.append(renderer.domElement);
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(width, height);
+    }
+
+
+    const clock = new THREE.Clock(true);
+    // Animation
+    function animate() {
+        const elapsedTime = clock.getElapsedTime();
+        requestAnimationFrame(animate);
+
+        // Update objects:
+        smokeParticles.forEach(particle => {
+            // particle.position.x = Math.cos(elapsedTime) * .55;
+            // particle.position.y = Math.sin(elapsedTime) * .55;
+            particle.rotation.z = elapsedTime * .05;
+        })
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener("resize", resize);
+</script> -->
